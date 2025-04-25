@@ -3,15 +3,6 @@
 importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js');
 
-// firebase.initializeApp({
-//   apiKey: "AIzaSyCexysGi-AZI1Txjh5KpDDlomtJdJpxDio",
-//   authDomain: "attendance-360.firebaseapp.com",
-//   projectId: "attendance-360",
-//   storageBucket: "attendance-360.firebasestorage.app",
-//   messagingSenderId: "135240545640",
-//   appId: "1:135240545640:web:f5832149ee110d8ca612dd",
-//   measurementId: "G-W2EXD3KHMT"
-// });
 
 firebase.initializeApp({
   apiKey: process.env.FIREBASE_API_KEY,
