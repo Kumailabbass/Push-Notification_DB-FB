@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Firebase Push Test</title>
+</head>
+<body>
+  <h1>Firebase Push Notification Test</h1>
+  <button id="request">Request Permission & Get Token</button>
+  <p>Status: <span id="status">Waiting...</span></p>
+  <p>Token: <pre id="token">None</pre></p>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID
+    };
+  
+    const statusElement = document.getElementById('status');
+    const tokenElement = document.getElementById('token');
+  
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+  
+    // Register service worker
+    const registerServiceWorker = async () => {
+      try {
+        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+          scope: '/'
+        });
+        console.log('Service Worker registered');
+        return registration;
+      } catch (error) {
+        console.error('Service Worker registration failed:', error);
+        throw error; // Make sure to re-throw the error
+      }
+    };
+  
+    if (!firebase.messaging.isSupported()) {
+      statusElement.textContent = "Messaging not supported in this browser!";
+      throw new Error("Firebase messaging is not supported");
+    }
+  
+    const messaging = firebase.messaging(app);
+  
+    // Add this to configure the service worker (background message handling)
+    messaging.onMessage((payload) => {
+      console.log('Message received:', payload);
+      // Customize notification here (if needed)
+    });
+  
+    document.getElementById('request').addEventListener('click', async () => {
+      try {
+        // 1. Register service worker
+        statusElement.textContent = "Registering service worker...";
+        await registerServiceWorker();
+  
+        // 2. Request notification permission
+        statusElement.textContent = "Requesting permission...";
+        const permission = await Notification.requestPermission();
+        
+        if (permission !== 'granted') {
+          throw new Error('Permission not granted');
+        }
+  
+        // 3. Get token with correct VAPID key
+        statusElement.textContent = "Getting token...";
+        const token = await messaging.getToken({
+          vapidKey: " " // Replace with your actual VAPID key
+        });
+  
+        statusElement.textContent = "Token received!";
+        tokenElement.textContent = token;
+        
+      } catch (error) {
+        statusElement.textContent = `Error: ${error.message}`;
+        console.error("Error:", error);
+      }
+    });
+  </script>
+  
+</body>
+</html>
