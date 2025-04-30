@@ -88,13 +88,27 @@ const sendNotification = async (request, reply) => {
             error: 'Target ID is required when target type is token',
           });
         }
+        // result = await notificationService.sendToDevice(targetId, payload);
+        // return reply.code(200).send({
+        //   success: result.success,
+        //   successCount: result.success ? 1 : 0,
+        //   failureCount: result.success ? 0 : 1,
+        // });
         result = await notificationService.sendToDevice(targetId, payload);
-        return reply.code(200).send({
-          success: result.success,
-          successCount: result.success ? 1 : 0,
-          failureCount: result.success ? 0 : 1,
-        });
-      
+
+        if (result.success) {
+          return reply.code(200).send({
+            success: true,
+            messageId: result.messageId || null,
+          });
+        } else {
+          return reply.code(500).send({
+            success: false,
+            error: result.error?.message || 'Failed to send notification',
+          });
+        }
+
+
       case 'user':
         if (!targetId) {
           return reply.code(400).send({

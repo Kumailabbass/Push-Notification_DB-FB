@@ -4,29 +4,56 @@ const deviceTokenRepo = require('../repositories/deviceTokenRepository');
 // Send notification to a specific device
 const sendToDevice = async (token, payload) => {
   try {
+    // const message = {
+    //   token,
+    //   notification: {
+    //     title: payload.title,
+    //     body: payload.body,
+    //   },
+    //   data: payload.data || {},
+    //   android: {
+    //     priority: 'high',
+    //     notification: {
+    //       imageUrl: payload.imageUrl,
+    //     },
+    //   },
+    //   apns: {
+    //     payload: {
+    //       aps: {
+    //         sound: 'default',
+    //       },
+    //     },
+    //     fcmOptions: {
+    //       imageUrl: payload.imageUrl,
+    //     },
+    //   },
+    // };
     const message = {
       token,
-      notification: {
-        title: payload.title,
-        body: payload.body,
-      },
       data: payload.data || {},
       android: {
         priority: 'high',
-        notification: {
-          imageUrl: payload.imageUrl,
-        },
+        notification: payload.body ? {
+          title: payload.title,
+          body: payload.body,
+          imageUrl: payload.imageUrl || undefined,
+        } : undefined,
       },
       apns: {
         payload: {
           aps: {
-            sound: 'default',
+            contentAvailable: true,
+            sound: payload.body ? 'default' : undefined,
           },
         },
         fcmOptions: {
-          imageUrl: payload.imageUrl,
+          imageUrl: payload.imageUrl || undefined,
         },
       },
+      notification: payload.body ? {
+        title: payload.title,
+        body: payload.body,
+      } : undefined,
     };
 
     const response = await messaging.send(message);
