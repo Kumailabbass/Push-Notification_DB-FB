@@ -55,7 +55,11 @@ const sendToDevice = async (token, payload) => {
         body: payload.body,
       } : undefined,
     };
-
+    try {
+      
+    } catch (error) {
+      
+    }
     const response = await messaging.send(message);
     return { success: true, messageId: response };
   } catch (error) {
@@ -95,7 +99,12 @@ const sendToDevices = async (tokens, payload) => {
       },
     };
 
-    const response = await messaging.sendMulticast(message);
+    try {
+      const response = await messaging.sendMulticast(message);
+    } catch (error) {
+      console.error(error.message)
+    }
+
     return {
       success: response.failureCount < tokens.length,
       successCount: response.successCount,
@@ -127,3 +136,11 @@ module.exports = {
   sendToUser,
   sendToAll,
 };
+
+
+sendToDevice("e3NicZwMTxsdt7N8rq6Q4:APA91bGEKA5FWDBS0SsM9oCaWmBphoGmpyLTsnDHlGAM6EE3PZozBDOuh9qNPWFUyLkO4df_552ft-R2EIgfGMmrMKEGPOKnAkfjLv_ycNdCaC76uNUyAqs",{
+  "title": " Direct Token Test",
+  "body": "You should see this on your phone!",
+  "data": {},
+  "imageUrl": ""
+})

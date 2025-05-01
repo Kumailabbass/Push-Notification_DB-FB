@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
   <title>Firebase Push Test</title>
@@ -73,7 +73,7 @@
         // 3. Get token with correct VAPID key
         statusElement.textContent = "Getting token...";
         const token = await messaging.getToken({
-          vapidKey: "BD4tmeg2K7k3ku6g81jDsH8W_WUQxbJXgsJVDpu7YAfVyZwLHM7b_J5wbu4c07gg1AsiB1Gy2_101eGgcXFEnn0" // Replace with your actual VAPID key
+          vapidKey: "BJB9cg_9xPlCuin7gOXdCe5J--bgAwa6zac-YNPYuXB4fBSgptgPdlvG_fO5dWxh6eqZ76slkW7Z9hAy2-SR1Jk" // Replace with your actual VAPID key
         });
   
         statusElement.textContent = "Token received!";
@@ -86,5 +86,54 @@
     });
   </script>
   <script src="firebase-messaging-sw.js"></script>
+</body>
+</html>  -->
+<!-- 
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FCM Test</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-messaging-compat.js"></script>
+</head>
+<body>
+  <h2>FCM Test Page</h2>
+  <button onclick="requestPermission()">Register & Get Token</button>
+  <p id="token"></p>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC7NN_stvKr9Y34CNhAx5i7Umpi3HmF85A",
+      authDomain: "office-backend-eea40.firebaseapp.com",
+      projectId: "office-backend-eea40",
+      storageBucket: "office-backend-eea40.firebasestorage.app",
+      messagingSenderId: "380869412947",
+      appId: "1:380869412947:web:d05b2c1e3a49f4ba385ea6",
+      measurementId: "G-W4MES8BVRT"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    async function requestPermission() {
+      try {
+        await Notification.requestPermission();
+        const token = await messaging.getToken({
+          vapidKey: 'BJB9cg_9xPlCuin7gOXdCe5J--bgAwa6zac-YNPYuXB4fBSgptgPdlvG_fO5dWxh6eqZ76slkW7Z9hAy2-SR1Jk'
+        });
+        document.getElementById("token").textContent = "Token: " + token;
+
+        // OPTIONAL: send token to your server via fetch()
+      } catch (err) {
+        console.error("Token error", err);
+      }
+    }
+
+    messaging.onMessage((payload) => {
+      console.log("Message received", payload);
+      alert("Notification Received: " + payload.notification.title);
+    });
+  </script>
 </body>
 </html>

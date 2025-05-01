@@ -6,6 +6,14 @@ const registerToken = async (request, reply) => {
   const { token, platform, userId } = request.body;
   
   try {
+    //     const user = await userRepo.findById(userId);
+    // if (!user) {
+    //   return reply.code(401).send({
+    //     success: false,
+    //     error: 'Invalid user',
+    //   });
+    // }
+
     const deviceToken = await deviceTokenRepo.saveToken({
       token,
       platform,

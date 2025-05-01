@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Fastify = require('fastify');
 const fastifyCors = require('@fastify/cors');
 const fastifyHelmet = require('@fastify/helmet');
@@ -27,10 +28,10 @@ const buildServer = () => {
   //   prefix: '/public/', // Optional: default is '/'
   // });
   // Change this in server.js:
-fastify.register(fastifyStatic, {
-  root: path.join(__dirname, 'public'),
-  prefix: '/', // Keep this as is
-});
+// fastify.register(fastifyStatic, {
+//   root: path.join(__dirname, 'public'),
+//   prefix: '/', // Keep this as is
+// });
   // Register plugins
   fastify.register(fastifyCors);
   fastify.register(fastifyHelmet, {

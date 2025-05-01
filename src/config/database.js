@@ -14,6 +14,9 @@ const AppDataSource = new DataSource({
   entities: [DeviceToken],
   migrations: ['src/migrations/**/*.js'],
   subscribers: [],
+  extra: {
+    ssl: env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  }
 });
 
 const initializeDatabase = async () => {
