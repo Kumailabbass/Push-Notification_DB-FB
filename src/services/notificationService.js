@@ -55,11 +55,7 @@ const sendToDevice = async (token, payload) => {
         body: payload.body,
       } : undefined,
     };
-    try {
-      
-    } catch (error) {
-      
-    }
+
     const response = await messaging.send(message);
     return { success: true, messageId: response };
   } catch (error) {
