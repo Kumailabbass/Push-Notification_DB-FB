@@ -1,5 +1,38 @@
 const notificationService = require('../services/notificationService');
 const deviceTokenRepo = require('../repositories/deviceTokenRepository');
+const { sendNotification } = require('../services/fcmService');
+
+async function sendNotificationWithLocation(req, reply) {
+  const { fcmToken, location, title, body } = req.body;
+
+  if (!fcmToken || !location || !location.latitude || !location.longitude) {
+    return reply.code(400).send({ success: false, message: 'Missing required fields' });
+  }
+
+  console.log('Received location:', location);
+
+  const message = {
+    token: fcmToken,
+    notification: {
+      title,
+      body
+    },
+    data: {
+      latitude: String(location.latitude),
+      longitude: String(location.longitude)
+    }
+  };
+
+  try {
+    const response = await sendNotification(message);
+    return reply.send({ success: true, firebaseResponse: response });
+  } catch (err) {
+    console.error('Error sending notification:', err);
+    return reply.code(500).send({ success: false, error: err.message });
+  }
+}
+
+
 
 // Register a new device token
 const registerToken = async (request, reply) => {
@@ -75,19 +108,19 @@ const deleteUserTokens = async (request, reply) => {
 };
 
 // Send a notification
-const sendNotification = async (request, reply) => {
+const sendNotificationToTarget = async (request, reply) => {
   const { title, body, data, imageUrl, targetType, targetId } = request.body;
-  
+
   const payload = {
     title,
     body,
     data,
     imageUrl,
   };
-  
+
   try {
     let result;
-    
+
     switch (targetType) {
       case 'token':
         if (!targetId) {
@@ -96,12 +129,7 @@ const sendNotification = async (request, reply) => {
             error: 'Target ID is required when target type is token',
           });
         }
-        // result = await notificationService.sendToDevice(targetId, payload);
-        // return reply.code(200).send({
-        //   success: result.success,
-        //   successCount: result.success ? 1 : 0,
-        //   failureCount: result.success ? 0 : 1,
-        // });
+
         result = await notificationService.sendToDevice(targetId, payload);
 
         if (result.success) {
@@ -116,7 +144,6 @@ const sendNotification = async (request, reply) => {
           });
         }
 
-
       case 'user':
         if (!targetId) {
           return reply.code(400).send({
@@ -124,13 +151,14 @@ const sendNotification = async (request, reply) => {
             error: 'Target ID is required when target type is user',
           });
         }
+
         result = await notificationService.sendToUser(targetId, payload);
         return reply.code(200).send(result);
-      
+
       case 'all':
         result = await notificationService.sendToAll(payload);
         return reply.code(200).send(result);
-      
+
       default:
         return reply.code(400).send({
           success: false,
@@ -148,7 +176,9 @@ const sendNotification = async (request, reply) => {
 
 module.exports = {
   registerToken,
+  sendNotificationWithLocation,
   deleteToken,
   deleteUserTokens,
   sendNotification,
+  sendNotification: sendNotificationToTarget, // avoid name conflict
 };

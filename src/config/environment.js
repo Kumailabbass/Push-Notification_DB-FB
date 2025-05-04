@@ -1,9 +1,21 @@
 const dotenv = require('dotenv');
 const { z } = require('zod');
 
-// Load environment variables (even though you removed .env, this is good practice)
 dotenv.config();
 
+// const envSchema = z.object({
+//   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+//   PORT: z.coerce.number().default(3000),
+//   HOST: z.string().default('localhost'),
+//   DB_HOST: z.string(),
+//   DB_PORT: z.coerce.number().default(5432),
+//   DB_USERNAME: z.string(),
+//   DB_PASSWORD: z.string(),
+//   DB_DATABASE: z.string(),
+//   FIREBASE_PROJECT_ID: z.string(),
+//   FIREBASE_PRIVATE_KEY: z.string(),
+//   FIREBASE_CLIENT_EMAIL: z.string(),
+// });
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().default(5000),
@@ -13,31 +25,16 @@ const envSchema = z.object({
   DB_USERNAME: z.string().default('postgres'),
   DB_PASSWORD: z.string().default('.kumailskar.'),
   DB_DATABASE: z.string().default('crud-app2'),
-  FIREBASE_PROJECT_ID: z.string().default('office-backend-eea40'),
-  FIREBASE_PRIVATE_KEY: z.string().default(`-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDQ1s5iuUuWQgK3\nga5xGWA9Am3qPAoH22PXzX03vkbe4lNtAOyVtX/BkmdyTukYjyo2oAgQEJzGltp6\nc800wXeUkdKW1s0dLx0i987KRZeYaWdP8B0CkmSoPEe86iaC33X2ImC7FlecHb6X\n0p/zm80IbOEsKP4WFa8oRo0TIc+ZWGMokfImoMAXhBxdypdk928iePjBXxTBGUKX\nOKp1W8wC96XW8I86vbJXcDAi1KKXIOQQgmIOu21K7MxLryAM/bLYycLoXfSti9dD\n9V6pU457BDAOHbm85fYuXvDe9p3GVER8mgedmB8HqQyoo034s7DpjI1mot8kHJhP\nPAosbnW9AgMBAAECggEADVd5G5fV4Iq6t17VYParjh+TxmVBM3ZMdHLKyfRh0lxo\nKFcTm47a/hKsgYImucHFAx9fKdOTMyFbt3tNbqOLewDZO3dhPDjl0MrpuZoPkMDv\nGjgZ9QTwNvU+6gPqzkKYu87qGhmtItVITKpmkJQcBFVHCgtbttfPdwW8KS7oSdYH\npg5lpVIRt0uRJkDx5YCMtDlNXvrJEBgeZKpraz81DHu551Ek048fSjUSCF4EgKXP\nklGEEyuMy0QFXZ4ilYilZxPtK6QMPCd1mbhvHlcqQsolvM1WzL5raghgNkxrB4pS\noBDDVK7dCNQMwJR6LnYgCjJMZqMvDI/+4mdcX9aVEQKBgQDx/N6CJ6oWc0LbUtDD\nSa3PhIXrRYgADZqiJwfefNDMudKvo7PVU+4Z3kwBSl8oQvAMwJJi5KrKCwaizbQ8\nd/cqmzfMrAWMQ+nu3ukcFAmknmHY8nhVD+Nq8iIsiYxfuaS6U4j3U3sRsO8sDKma\ncMksUSDFFbYjlBx7zkdTyaDIRQKBgQDc7o3Xh7WSlAYz1ibfUc+eSSHNPBPlbxgJ\ntf99NQbwQ2FJiW/vjaVIb5Sxmx4+UOkdqSllq9C0HcLsxH/db+BpqjvODL3VRGyy\nZ1lPu5QA9On4CDUwC8zmk8cmy6ZEC1GpyfbB9QJrto3WqlnAuK4bh70T5387jXM1\nRfJ0F/c7GQKBgQC0iRGATRNKWIeilXCGoet4jMhUtLU4RO3+19u5E6m7c09KFnnO\nSCW1SvGtbMz9fqMVAH62JR9+SSeUQp+bFW1jbhX9LsGc2fYnbkq/1fszw64AazV3\nULk8SpVQYPZHXHsXP8dJrhB9LGHjnTbTsB2GYKhwITiX5qIxg74XNrAreQKBgQCj\novliIv0klQjHCh3+mFzb0zT7Cz19WTyHrMqQVV9PQ8jiK67B0rsSHLsYlVjgNROE\nyY+E466QSd7feWdvfvbLrK/hHOTZ+nU76npnKPslfkFxWbrzXDomqlv+ayY6Ddwt\nkw52eF+TokIKNmCF8wPaFj7AaF1/oXQsiCNdQ4b1uQKBgQCArJbNN0l+pfPCsv9v\nJ0VRnjgk8I66kQDa/F+SuZNBVzppY5cNO3nv/Lt7oN/MCjTTSqFB6kzqWDS3iUiY\nS7hb4h0DFbXjRSwJJOptiuML641PKg3HgC/bLuY3u1rs9sPpa3uzph71JIWPPPkI\nDN22QRUSYXJzVodGQfENypDNvw==\n-----END PRIVATE KEY-----\n`),
-  FIREBASE_CLIENT_EMAIL: z.string().default('firebase-adminsdk-fbsvc@office-backend-eea40.iam.gserviceaccount.com'),
+  FIREBASE_PROJECT_ID: z.string().default('attendance-8f8b4'),
+  FIREBASE_PRIVATE_KEY: z.string().default(`-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCnNtJ3GrIZbqL+\nqALB/xlXKkKQ8ZMGrInST7E25b6JKKoib7eVb4g66Gu61dREyspw0NGESgelenFR\nLGIAeHFFGI8lzmQdsQQn1B7kGKbgTYBQ/F8PoaND4168KD0Jgup9D5cW3KlIo2My\n3hjkNkBrf4DXa9+sGI//YGgi0ssO6Scee+x0aCmYbofbGwwol/LsKxOJWn8jPj8n\nFy4q3o/FjX2Crk8Sj4Kc6Du8jIprfvkxIlOcl8kY8CkYMrfVTWlWtXcBMpW/amzo\nmcLvooS7ehT99TqPTVZzhrtEp19SoWsOOaC4T5l52Ljgc7gtn1zr7fVT2zj326t5\nqvosrMh3AgMBAAECggEADtu8vO+m1sKxgh5szE8+MbQkIRwOPAAV6RXCwgWNNkPi\nRlgWAJXeDZn8hKgeihRZA8hSbcZkQoyMSDHA7ZjGO+UQR0Q9OjQyEdXz/sHABlts\npQWf7tQmnVA1aVPMBK3Y50781n+6HSXDmVAJ9zFo7QRx7vJ7eB/gn8kxx7Jib8sb\n/9xDzE0sz0MJLGT6fVd0+ouQ3adU5kb6TN3mOjpcy1KfqE5POu0nbqWCcQPkEVLe\noBx7Bjkuz53Sf+iAXYZH3lRb7OpUvST+o16WjwvgDq4bCkJRoXFseIcxOalgBvde\nXUk59GTGEWRb6Qsi+Ll+fFdYMKVvn4aAOoCq8ZBMRQKBgQDmIa/SE6Sdqb7rFOAa\n+VWeCjsobJSntfiaPg5UY37XJIPpqDMoHK6JLI5OG4Sn+mqJ/hIWVwewEP/ZVY20\npLV3oiFYkXepObIcbegvn+9vI4dvSrW4NQauJjwcH5gOngtzdykQ/6B0fuDPkom8\nRfYfdTcLRko8aeBFYUk+YfYXwwKBgQC6Apw+7Xr8baYTcmoHN2Tesk4Er/attEXF\nzI/TPsPLdStLrK0np0ijSVFJSL6wE4k842dRWjcC/nWi91STcVylpmncv5gI9yXk\nzkBWjY3NRvd5IYFo6Q4bXm28AsRKHlBR/JX9qN7dUYzr/XzJgtc8G7QC9OY8Gait\nYD0YbU91PQKBgBaQkwbMOkXjUP8H6vl6HTUD180c6G6RXzDwiMMphlReFjkg7vMt\n7McygTmTZSx7V1r0eJ2MJwrSf+O1idF+nPSABzkB+nOzXo1/EVcqHXYOS8dT0gGf\n4WnOAfLX/jbgtEq8EmDCT99cWXrA6ZR2X62x9pW6bKkD0KO86Eufm1u1AoGAGxOu\nMurW8E/10PbiwFIr+M7z1HLY8chAL97rQNDuJ3vS5Z0pR5BuXnaZwpU4TOFLJPXl\nYE5Fm8X20dY3FY928RYcauno88UmWvw7GV5ZufwOoi9iaychypIgXzH36OIoxwaB\nvv8KEiWA4glwVNUbB8Dwn02PBkil6TcNLbUbz/ECgYAwSgbBViEuRRMs4sZT1Whp\nsjU6L6tCskpD/Se4ENZYArZDBM0rrNkRzzuDVPeJ8pJmBH1vtfkEUic9hw1JabUC\nsBWPRQ+A1XB7ONpYtFnBCRryqUM8C4IkAXRkB/UGzk4TIUanC9YRzX76B6NgxpIl\nEKqxq7O7nhCpfTIWtFGc4g==\n-----END PRIVATE KEY-----\n",`),
+  FIREBASE_CLIENT_EMAIL: z.string().default('firebase-adminsdk-fbsvc@attendance-8f8b4.iam.gserviceaccount.com'),
 });
 
 const parseEnv = () => {
   try {
-    // Process the private key - remove indentation and extra spaces
-    const processedEnv = { ...process.env };
-    if (processedEnv.FIREBASE_PRIVATE_KEY) {
-      processedEnv.FIREBASE_PRIVATE_KEY = processedEnv.FIREBASE_PRIVATE_KEY
-        .replace(/\\n/g, '\n')
-        .replace(/^\s+/gm, '');
-    }
-    
-    const parsed = envSchema.parse(processedEnv);
-    
-    // Additional processing for the private key
-    parsed.FIREBASE_PRIVATE_KEY = parsed.FIREBASE_PRIVATE_KEY
-      .replace(/\\n/g, '\n')
-      .trim();
-    
-    return parsed;
+    return envSchema.parse(process.env);
   } catch (error) {
-    console.error('Invalid environment variables:', error.errors);
+    console.error('Invalid environment variables:', error);
     process.exit(1);
   }
 };

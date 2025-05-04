@@ -31,16 +31,16 @@
 
 
 
-// importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js');
-// importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js');
+// // importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js');
+// // importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js');
 
-// firebase.initializeApp({
-//   apiKey: "YOUR_API_KEY",
-//   authDomain: "attendance-8f8b4.firebaseapp.com",
-//   projectId: "attendance-8f8b4",
-//   storageBucket: "attendance-8f8b4.appspot.com",
-//   messagingSenderId: "YOUR_SENDER_ID",
-//   appId: "YOUR_APP_ID"
-// });
+// // firebase.initializeApp({
+// //   apiKey: "YOUR_API_KEY",
+// //   authDomain: "attendance-8f8b4.firebaseapp.com",
+// //   projectId: "attendance-8f8b4",
+// //   storageBucket: "attendance-8f8b4.appspot.com",
+// //   messagingSenderId: "YOUR_SENDER_ID",
+// //   appId: "YOUR_APP_ID"
+// // });
 
-// const messaging = firebase.messaging();
+// // const messaging = firebase.messaging();

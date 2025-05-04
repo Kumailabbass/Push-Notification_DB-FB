@@ -97,6 +97,36 @@ const deleteUserTokensSchema = {
   },
 };
 
+const sendNotificationWithLocationSchema = {
+  tags: ['notifications'],
+  body: {
+    type: 'object',
+    required: ['fcmToken', 'location', 'title', 'body'],
+    properties: {
+      fcmToken: { type: 'string' },
+      title: { type: 'string' },
+      body: { type: 'string' },
+      location: {
+        type: 'object',
+        required: ['latitude', 'longitude'],
+        properties: {
+          latitude: { type: 'number' },
+          longitude: { type: 'number' }
+        }
+      }
+    }
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        success: { type: 'boolean' },
+        firebaseResponse: { type: 'object' }
+      }
+    }
+  }
+};
+
 const sendNotificationSchema = {
   tags: ['notifications'],
   description: 'Send a push notification to devices',
@@ -175,5 +205,6 @@ module.exports = {
   registerTokenSchema,
   deleteTokenSchema,
   deleteUserTokensSchema,
+  sendNotificationWithLocationSchema,
   sendNotificationSchema,
 };

@@ -88,6 +88,7 @@ const buildServer = () => {
   });
 
   // Register Swagger UI
+  if (env.NODE_ENV === 'development') {
   fastify.register(fastifySwaggerUi, {
     routePrefix: '/documentation',
     uiConfig: {
@@ -99,7 +100,7 @@ const buildServer = () => {
     staticCSP: false,
     transformSpecificationClone: true,
   });
-
+  }
   // Register routes
   fastify.register(registerNotificationRoutes);
 
