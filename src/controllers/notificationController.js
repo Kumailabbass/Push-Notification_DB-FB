@@ -1,9 +1,31 @@
 const notificationService = require('../services/notificationService');
 const deviceTokenRepo = require('../repositories/deviceTokenRepository');
 const { sendNotification } = require('../services/fcmService');
+const { AppDataSource } = require('../config/database');
+const { Location } = require('../entities/Location');
+
+const getAllLocations = async (request, reply) => {
+  try {
+    const locationRepo = AppDataSource.getRepository(Location);
+    const locations = await locationRepo.find({
+      order: { createdAt: 'DESC' } // optional: latest first
+    });
+
+    return reply.code(200).send({
+      success: true,
+      data: locations,
+    });
+  } catch (error) {
+    request.log.error(error);
+    return reply.code(500).send({
+      success: false,
+      error: 'Failed to fetch locations',
+    });
+  }
+};
 
 async function sendNotificationWithLocation(req, reply) {
-  const { fcmToken, location, title, body } = req.body;
+  const { fcmToken, location, title, body, userId } = req.body;
 
   if (!fcmToken || !location || !location.latitude || !location.longitude) {
     return reply.code(400).send({ success: false, message: 'Missing required fields' });
@@ -11,6 +33,22 @@ async function sendNotificationWithLocation(req, reply) {
 
   console.log('Received location:', location);
 
+  // Save to database
+  try {
+    const locationRepo = AppDataSource.getRepository(Location);
+    const newLocation = locationRepo.create({
+      latitude: location.latitude,
+      longitude: location.longitude,
+      userId,
+      fcmToken,
+    });
+    await locationRepo.save(newLocation);
+  } catch (dbErr) {
+    console.error('Error saving location to DB:', dbErr);
+    return reply.code(500).send({ success: false, error: 'Database error' });
+  }
+
+  // Send FCM notification
   const message = {
     token: fcmToken,
     notification: {
@@ -31,6 +69,7 @@ async function sendNotificationWithLocation(req, reply) {
     return reply.code(500).send({ success: false, error: err.message });
   }
 }
+
 
 
 
@@ -175,6 +214,7 @@ const sendNotificationToTarget = async (request, reply) => {
 };
 
 module.exports = {
+  getAllLocations,
   registerToken,
   sendNotificationWithLocation,
   deleteToken,

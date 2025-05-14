@@ -1,3 +1,5 @@
+
+
 const dotenv = require('dotenv');
 const { z } = require('zod');
 
@@ -5,22 +7,25 @@ dotenv.config();
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  PORT: z.coerce.number().default(3000),
+  PORT: z.coerce.number().default(5000),
   HOST: z.string().default('localhost'),
-  DB_HOST: z.string(),
+  DB_HOST: z.string().default(''),
   DB_PORT: z.coerce.number().default(5432),
-  DB_USERNAME: z.string(),
-  DB_PASSWORD: z.string(),
-  DB_DATABASE: z.string(),
-  FIREBASE_PROJECT_ID: z.string(),
-  FIREBASE_PRIVATE_KEY: z.string(),
-  FIREBASE_CLIENT_EMAIL: z.string(),
+  DB_USERNAME: z.string().default(''),
+  DB_PASSWORD: z.string().default(''),
+  DB_DATABASE: z.string().default(''),
+  FIREBASE_PROJECT_ID: z.string().default(''),
+  FIREBASE_PRIVATE_KEY: z.string().default(''),
+  FIREBASE_CLIENT_EMAIL: z.string().default(''),
 });
-
 
 const parseEnv = () => {
   try {
-    return envSchema.parse(process.env);
+    const parsed = envSchema.parse(process.env);
+    return {
+      ...parsed,
+      FIREBASE_PRIVATE_KEY: parsed.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    };
   } catch (error) {
     console.error('Invalid environment variables:', error);
     process.exit(1);

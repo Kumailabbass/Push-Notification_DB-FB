@@ -1,7 +1,7 @@
 const { DataSource } = require('typeorm');
 const { env } = require('./environment');
 const { DeviceToken } = require('../entities/DeviceToken');
-
+const { Location } = require ('../entities/Location');
 // const AppDataSource = new DataSource({
 //   type: 'postgres',
 //   host: env.DB_HOST,
@@ -24,7 +24,7 @@ const AppDataSource = new DataSource({
   database: env.DB_DATABASE,
   synchronize: env.NODE_ENV === 'development',
   logging: env.NODE_ENV === 'development',
-  entities: [DeviceToken],
+  entities: [DeviceToken, Location],
   migrations: ['src/migrations/**/*.js'],
   subscribers: [],
   extra: {

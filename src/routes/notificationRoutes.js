@@ -98,6 +98,11 @@ const {
 } = require('../schemas/notificationSchemas');
 
 const registerNotificationRoutes = (fastify) => {
+
+  // Get All Locations
+  const { getAllLocations } = require('../controllers/notificationController');
+  fastify.get('/locations', getAllLocations);
+
   // Register a device token
   fastify.post(
     '/api/notifications/tokens',
@@ -127,11 +132,13 @@ const registerNotificationRoutes = (fastify) => {
   );
 
   //  NEW: Send notification with location
-  fastify.post(
-    '/api/notifications/send-with-location',
-    { schema: sendNotificationWithLocationSchema },
-    notificationController.sendNotificationWithLocation
-  );
+  // fastify.post(
+  //   '/api/notifications/send-with-location',
+  //   { schema: sendNotificationWithLocationSchema },
+  //   notificationController.sendNotificationWithLocation
+  // );
+  fastify.post('/send-notification-with-location', notificationController.sendNotificationWithLocation);
+
 
   // Get token count (extra endpoint)
   fastify.get('/api/notifications/tokens/count', {
