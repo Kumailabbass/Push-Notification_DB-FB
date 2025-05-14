@@ -1,3 +1,2 @@
 # Ignore secrets
-src/config/firebase-service-account.json
-src/.env
+eco ".env"
