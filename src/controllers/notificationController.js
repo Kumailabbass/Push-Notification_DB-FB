@@ -220,5 +220,5 @@ module.exports = {
   deleteToken,
   deleteUserTokens,
   sendNotification,
-  sendNotification: sendNotificationToTarget, // avoid name conflict
+  sendNotification: sendNotificationToTarget, // avoid name conflict7
 };
